@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projects_2/widgets/welcome_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
               end: Alignment.bottomRight,
             ),
           ),
-          child: WelcomeScreen(),
+          child: Text("Welcome to Flutter"),
         ),
       ),
     );
