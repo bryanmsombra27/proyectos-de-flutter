@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+  final void Function() startQuiz;
+
+  const WelcomeScreen({super.key, required this.startQuiz});
 
   static const name = "welcome_screen";
 
@@ -24,12 +27,14 @@ class WelcomeScreen extends StatelessWidget {
           SizedBox(height: 80),
           Text(
             "Learn flutter the fun way!",
-            style: TextStyle(color: Colors.white, fontSize: 24),
+            style: GoogleFonts.lato(color: Colors.white, fontSize: 24),
           ),
           SizedBox(height: 30),
           OutlinedButton.icon(
             icon: Icon(Icons.arrow_right_alt),
-            onPressed: () {},
+            onPressed: () {
+              startQuiz();
+            },
             style: OutlinedButton.styleFrom(foregroundColor: Colors.white),
             label: Text("Start Quiz"),
           ),
