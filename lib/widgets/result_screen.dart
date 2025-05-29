@@ -4,8 +4,13 @@ import 'package:projects_2/widgets/questions_summary.dart';
 
 class ResultScreen extends StatelessWidget {
   final List<String> chosenAnswers;
+  final void Function() resetQuiz;
 
-  const ResultScreen({super.key, required this.chosenAnswers});
+  const ResultScreen({
+    super.key,
+    required this.chosenAnswers,
+    required this.resetQuiz,
+  });
 
   static const name = "result_screen";
 
@@ -42,11 +47,23 @@ class ResultScreen extends StatelessWidget {
           children: [
             Text(
               "You answer  $numCorrectQuestions out of  $numTotalQuestions questions correctly",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: const Color.fromARGB(255, 187, 116, 248),
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             SizedBox(height: 30),
             QuestionsSummary(summaryData: summaryData),
             SizedBox(height: 30),
-            TextButton(onPressed: () {}, child: Text("Restart Quiz")),
+            TextButton.icon(
+              icon: Icon(Icons.refresh),
+              onPressed: () {
+                resetQuiz();
+              },
+              label: Text("Restart Quiz"),
+            ),
           ],
         ),
       ),
