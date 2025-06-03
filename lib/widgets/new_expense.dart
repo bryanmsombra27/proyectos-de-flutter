@@ -128,10 +128,12 @@ class _NewExpenseState extends State<NewExpense> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      _selectedDate == null
-                          ? "No date selected"
-                          : formatter.format(_selectedDate!),
+                    Flexible(
+                      child: Text(
+                        _selectedDate == null
+                            ? "No date selected"
+                            : formatter.format(_selectedDate!),
+                      ),
                     ),
                     IconButton(
                       onPressed: _presentDatePicker,
