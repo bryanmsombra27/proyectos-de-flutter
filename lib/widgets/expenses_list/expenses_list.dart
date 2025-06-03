@@ -23,6 +23,14 @@ class ExpensesList extends StatelessWidget {
         // return ListTile(leading: Text(expense.title));
         return Dismissible(
           // key: Key(expense.id),
+          background: Container(
+            color: Theme.of(context).colorScheme.error.withValues(alpha: .75),
+            // margin: EdgeInsets.symmetric(horizontal: 16),
+            // margin: Theme.of(context).cardTheme.margin,
+            margin: EdgeInsets.symmetric(
+              horizontal: Theme.of(context).cardTheme.margin!.horizontal,
+            ),
+          ),
           key: ValueKey(expense.id),
           onDismissed: (direction) {
             onDelete(expense);

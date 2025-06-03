@@ -5,6 +5,15 @@ void main() {
   runApp(const MyApp());
 }
 
+final kColorschema = ColorScheme.fromSeed(
+  seedColor: Color.fromARGB(255, 96, 59, 181),
+);
+
+final kDarkColorSchema = ColorScheme.fromSeed(
+  brightness: Brightness.dark,
+  seedColor: Color.fromARGB(255, 5, 99, 125),
+);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -13,8 +22,48 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      themeMode: ThemeMode.dark,
+      darkTheme: ThemeData.dark().copyWith(
+        colorScheme: kDarkColorSchema,
+
+        cardTheme: CardThemeData(
+          color: kColorschema.secondaryContainer,
+          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        ),
+
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kDarkColorSchema.primaryContainer,
+            foregroundColor: kDarkColorSchema.onPrimaryContainer,
+          ),
+        ),
+      ),
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: kColorschema,
+
+        appBarTheme: AppBarTheme(
+          backgroundColor: kColorschema.onPrimaryContainer,
+          foregroundColor: kColorschema.onPrimaryContainer,
+        ),
+
+        cardTheme: CardThemeData(
+          color: kColorschema.secondaryContainer,
+          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        ),
+
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kColorschema.primaryContainer,
+          ),
+        ),
+
+        textTheme: ThemeData().textTheme.copyWith(
+          titleLarge: TextStyle(
+            fontWeight: FontWeight.normal,
+            color: kColorschema.onSecondaryContainer,
+            fontSize: 14,
+          ),
+        ),
       ),
       home: Scaffold(
         body: Container(
