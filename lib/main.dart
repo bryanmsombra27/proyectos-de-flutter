@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projects_2/widgets/expenses.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
               end: Alignment.bottomRight,
             ),
           ),
-          child: Text("Welcome to Flutter"),
+          child: Expenses(),
         ),
       ),
     );
