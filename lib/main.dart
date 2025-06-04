@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:projects_2/widgets/expenses.dart';
 
+// para poder configurar la orientacion de la pantalla
+
+// import "package:flutter/services.dart";
+
+// void main() async {
+// await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+// WidgetsFlutterBinding.ensureInitialized();
+
+//
 void main() {
   runApp(const MyApp());
 }

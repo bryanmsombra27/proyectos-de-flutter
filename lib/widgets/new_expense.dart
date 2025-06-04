@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projects_2/models/expense.dart';
@@ -52,25 +55,45 @@ class _NewExpenseState extends State<NewExpense> {
     if (_titleController.text.trim().isEmpty ||
         amountIsInvalid ||
         _selectedDate == null) {
-      showDialog(
-        context: context,
-        builder: (ctx) {
-          return AlertDialog(
-            title: Text("Invalid input"),
-            content: Text(
-              "Please provide a valid title, amount and category was entered",
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(ctx);
-                },
-                child: Text("Okay"),
-              ),
-            ],
-          );
-        },
-      );
+      Platform.isIOS
+          ? showCupertinoDialog(
+              context: context,
+              builder: (ctx) {
+                return CupertinoAlertDialog(
+                  title: Text("Invalid input"),
+                  content: Text(
+                    "Please provide a valid title, amount and category was entered",
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                      },
+                      child: Text("Okay"),
+                    ),
+                  ],
+                );
+              },
+            )
+          : showDialog(
+              context: context,
+              builder: (ctx) {
+                return AlertDialog(
+                  title: Text("Invalid input"),
+                  content: Text(
+                    "Please provide a valid title, amount and category was entered",
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                      },
+                      child: Text("Okay"),
+                    ),
+                  ],
+                );
+              },
+            );
       return;
     }
 
@@ -97,96 +120,214 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsetsGeometry.fromLTRB(16, 48, 16, 16),
-      child: Column(
-        children: [
-          TextField(
-            // FORMA 2 DE MANEJAR LOS VALORES DE LOS INPUTS EN FLUTTER
-            controller: _titleController,
-            // forma 1 de manejar los valores de los inputs en flutter
-            // onChanged: _saveTitleInput,
-            maxLength: 50,
-            decoration: InputDecoration(label: Text("Title")),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _amountController,
-                  maxLength: 50,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    label: Text("Amount"),
-                    prefixText: "\$ ",
-                  ),
-                ),
+    final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
+
+    return LayoutBuilder(
+      builder: (ctx, constraints) {
+        final width = constraints.maxWidth;
+
+        return SizedBox(
+          height: double.infinity,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsetsGeometry.fromLTRB(
+                16,
+                16,
+                16,
+                keyboardSpace + 16,
               ),
-              SizedBox(width: 16),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        _selectedDate == null
-                            ? "No date selected"
-                            : formatter.format(_selectedDate!),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: _presentDatePicker,
-                      icon: Icon(Icons.calendar_month),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16),
-          Row(
-            children: [
-              DropdownButton(
-                value: _selectedCategory,
-                items: Category.values
-                    .map(
-                      (category) => DropdownMenuItem(
-                        value: category,
-                        child: Text(category.name.toUpperCase()),
-                      ),
+              child: Column(
+                children: [
+                  if (width >= 600)
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            // FORMA 2 DE MANEJAR LOS VALORES DE LOS INPUTS EN FLUTTER
+                            controller: _titleController,
+                            // forma 1 de manejar los valores de los inputs en flutter
+                            // onChanged: _saveTitleInput,
+                            maxLength: 50,
+                            decoration: InputDecoration(label: Text("Title")),
+                          ),
+                        ),
+                        SizedBox(width: 24),
+                        Expanded(
+                          child: TextField(
+                            controller: _amountController,
+                            maxLength: 50,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              label: Text("Amount"),
+                              prefixText: "\$ ",
+                            ),
+                          ),
+                        ),
+                      ],
                     )
-                    .toList(),
-                onChanged: (value) {
-                  if (value == null) return;
-                  setState(() {
-                    _selectedCategory = value;
-                  });
-                },
+                  else
+                    TextField(
+                      // FORMA 2 DE MANEJAR LOS VALORES DE LOS INPUTS EN FLUTTER
+                      controller: _titleController,
+                      // forma 1 de manejar los valores de los inputs en flutter
+                      // onChanged: _saveTitleInput,
+                      maxLength: 50,
+                      decoration: InputDecoration(label: Text("Title")),
+                    ),
+
+                  if (width >= 600)
+                    Row(
+                      children: [
+                        DropdownButton(
+                          value: _selectedCategory,
+                          items: Category.values
+                              .map(
+                                (category) => DropdownMenuItem(
+                                  value: category,
+                                  child: Text(category.name.toUpperCase()),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            if (value == null) return;
+                            setState(() {
+                              _selectedCategory = value;
+                            });
+                          },
+                        ),
+                        SizedBox(width: 24),
+
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  _selectedDate == null
+                                      ? "No date selected"
+                                      : formatter.format(_selectedDate!),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: _presentDatePicker,
+                                icon: Icon(Icons.calendar_month),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  else
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _amountController,
+                            maxLength: 50,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              label: Text("Amount"),
+                              prefixText: "\$ ",
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 16),
+
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  _selectedDate == null
+                                      ? "No date selected"
+                                      : formatter.format(_selectedDate!),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: _presentDatePicker,
+                                icon: Icon(Icons.calendar_month),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  SizedBox(height: 16),
+                  if (width >= 600)
+                    Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 14),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("Cancel"),
+                              ),
+                              ElevatedButton(
+                                onPressed: _submitExpenseData,
+                                child: Text("Save Expense"),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  else
+                    Row(
+                      children: [
+                        DropdownButton(
+                          value: _selectedCategory,
+                          items: Category.values
+                              .map(
+                                (category) => DropdownMenuItem(
+                                  value: category,
+                                  child: Text(category.name.toUpperCase()),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            if (value == null) return;
+                            setState(() {
+                              _selectedCategory = value;
+                            });
+                          },
+                        ),
+                        Spacer(),
+                      ],
+                    ),
+                  if (width >= 600)
+                    Container(
+                      margin: EdgeInsets.only(top: 14),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("Cancel"),
+                          ),
+                          ElevatedButton(
+                            onPressed: _submitExpenseData,
+                            child: Text("Save Expense"),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
               ),
-              Spacer(),
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 14),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("Cancel"),
-                ),
-                ElevatedButton(
-                  onPressed: _submitExpenseData,
-                  child: Text("Save Expense"),
-                ),
-              ],
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
