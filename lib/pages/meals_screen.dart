@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projects_2/models/meal.dart';
+import 'package:projects_2/widgets/index.dart';
 
 class MealsScreen extends StatelessWidget {
   final String title;
@@ -36,7 +37,7 @@ class MealsScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final meal = meals[index];
 
-          return;
+          return MealItem(meal: meal);
         },
       );
     }
