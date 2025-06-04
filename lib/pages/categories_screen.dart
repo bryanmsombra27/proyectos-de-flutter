@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:projects_2/data/fake.dart';
+import 'package:projects_2/pages/index.dart';
 import 'package:projects_2/widgets/index.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
 
   static const name = "categories_screen";
+
+  void _selectCategory(BuildContext context) {
+    // Navigator.of(context).push(route); // otra alternativa de navigar entre pantallas
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => MealsScreen(title: "Meal", meals: []),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +32,12 @@ class CategoriesScreen extends StatelessWidget {
         ),
         children: [
           ...availableCategories.map(
-            (category) => CategoryGridItem(category: category),
+            (category) => CategoryGridItem(
+              category: category,
+              onTap: () {
+                _selectCategory(context);
+              },
+            ),
           ),
         ],
       ),
