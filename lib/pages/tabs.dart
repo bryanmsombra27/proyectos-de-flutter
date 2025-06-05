@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projects_2/models/meal.dart';
 import 'package:projects_2/pages/index.dart';
+import 'package:projects_2/widgets/index.dart';
 
 class Tabs extends StatefulWidget {
   const Tabs({super.key});
@@ -59,7 +60,15 @@ class _TabsState extends State<Tabs> {
       activePageTitle = "Favorites";
     }
 
+    void _setScreen(String identifier) {
+      if (identifier == "filters") {
+      } else {
+        Navigator.of(context).pop();
+      }
+    }
+
     return Scaffold(
+      drawer: MainDrawer(onSelectScreen: _setScreen),
       appBar: AppBar(title: Text(activePageTitle)),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(
