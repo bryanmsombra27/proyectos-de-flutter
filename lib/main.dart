@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeApp().theme(),
-      home: CategoriesScreen(),
+      home: Tabs(),
     );
   }
 }
