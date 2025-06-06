@@ -61,9 +61,17 @@ class _TabsState extends State<Tabs> {
     }
 
     void _setScreen(String identifier) {
+      Navigator.of(context).pop();
+
       if (identifier == "filters") {
-      } else {
-        Navigator.of(context).pop();
+        // Navigator.of(context).pushReplacement(
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (ctx) {
+              return FiltersScreen();
+            },
+          ),
+        );
       }
     }
 
